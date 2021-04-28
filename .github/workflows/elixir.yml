@@ -41,7 +41,7 @@ jobs:
             ${{ runner.os }}-asdf-
 
       - name: install asdf elixir plugin
-        uses: asdf-vm/actions/plugins-add
+        uses: asdf-vm/actions/plugins-add@v1.1.0
 
       - name: asdf_install
         uses: asdf-vm/actions/install@v1.1.0
