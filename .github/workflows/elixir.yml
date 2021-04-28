@@ -28,6 +28,7 @@ jobs:
       - name: generate .tool-versions file
         run: |
           echo "elixir ${{ matrix.elixir }}" > .tool-versions
+          echo "erlang ${{ matrix.erlang }}" >> .tool-versions
 
       # https://github.com/actions/cache
       - name: asdf cache
