@@ -2,14 +2,16 @@ name: CI
 # TODO: add pull_request
 on: [push]
 jobs:
- mix_test:
-   name: mix test (Elixir ${{ matrix.elixir }} OTP ${{ matrix.otp }})
-   strategy:
-     matrix:
-       elixir: ['1.12.x']
-       otp: ['23.x']
-   # TODO: switch to macos-11 once available (https://github.com/actions/virtual-environments/issues/2486)
-   runs-on: macos-latest
-   steps:
-     # https://github.com/actions/checkout
-     - uses: actions/checkout@v2
+  mix_test:
+    name: mix test (Elixir ${{ matrix.elixir }} OTP ${{ matrix.otp }})
+    # TODO: test on macos, maybe via asdf?
+    # switch to macos-11 once available (https://github.com/actions/virtual-environments/issues/2486)
+    runs-on: macos-latest
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v2
+      # https://github.com/asdf-vm/actions#main-actions
+      - name: asdf_install
+        uses: asdf-vm/actions/install@v1.1.0
+        with:
+          tool_versions: "elixir 1.11.4-otp-23"
