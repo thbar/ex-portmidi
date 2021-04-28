@@ -41,7 +41,7 @@ jobs:
             ${{ runner.os }}-asdf-erlang-${{ matrix.erlang }}-
             ${{ runner.os }}-asdf-
 
-      - name: install asdf elixir plugin
+      - name: install asdf plugins
         uses: asdf-vm/actions/plugins-add@v1.1.0
 
       - name: asdf_install
