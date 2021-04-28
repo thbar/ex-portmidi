@@ -14,4 +14,5 @@ jobs:
       - name: asdf_install
         uses: asdf-vm/actions/install@v1.1.0
         with:
-          tool_versions: "elixir 1.11.4-otp-23"
+          tool_versions: >
+            elixir 1.11.4-otp-23
