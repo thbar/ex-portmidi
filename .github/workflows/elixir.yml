@@ -35,11 +35,11 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.ASDF_DIR }}
-          key: ${{ runner.os }}-asdf-erlang-${{ matrix.erlang }}-elixir-${{ matrix.elixir }}
+          key: ${{ runner.os }}-asdf-v2-erlang-${{ matrix.erlang }}-elixir-${{ matrix.elixir }}
           restore-keys: |
-            ${{ runner.os }}-asdf-erlang-${{ matrix.erlang }}-elixir-${{ matrix.elixir }}
-            ${{ runner.os }}-asdf-erlang-${{ matrix.erlang }}-
-            ${{ runner.os }}-asdf-
+            ${{ runner.os }}-asdf-v2-erlang-${{ matrix.erlang }}-elixir-${{ matrix.elixir }}
+            ${{ runner.os }}-asdf-v2-erlang-${{ matrix.erlang }}-
+            ${{ runner.os }}-asdf-v2-
 
       - name: install asdf plugins
         uses: asdf-vm/actions/plugins-add@v1.1.0
