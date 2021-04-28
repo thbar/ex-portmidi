@@ -1,6 +1,11 @@
 name: CI
 # TODO: add pull_request
-on: [push]
+on: 
+  push:
+  # pull_request:
+  schedule:
+    # run a quick build twice a week to avoid cache eviction of the erlang compilation
+    - cron: 0 9 * * SUN,WED
 jobs:
   mix_test:
     name: mix test (Elixir ${{ matrix.elixir }} OTP ${{ matrix.otp }})
