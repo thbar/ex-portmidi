@@ -14,9 +14,10 @@ jobs:
       - name: asdf_install
         uses: asdf-vm/actions/install@v1.1.0
         with:
-          tool_versions: >
-            elixir 1.11.4-otp-23
-            erlang 23.2.7.2
-
+          tool_versions: erlang 23.3.2
+      - name: asdf_install
+        uses: asdf-vm/actions/install@v1.1.0
+        with:
+          tool_versions: elixir 1.11.4-otp-23
       - run: mix deps.get
       - run: mix test
