@@ -1,15 +1,16 @@
 name: CI
 # TODO: add pull_request
 on: [push]
-# TODO: create a bi-weekly build to avoid cache eviction, or find something better like binary builds for erlang
-# https://github.com/actions/cache#cache-limits
-strategy:
-  matrix:
-    erlang: ["23.2.7.2"]
-    elixir: ["1.11.4-otp-23"]
 jobs:
   mix_test:
     name: mix test (Elixir ${{ matrix.elixir }} OTP ${{ matrix.otp }})
+    # TODO: create a bi-weekly build to avoid cache eviction, or find something better like binary builds for erlang
+    # https://github.com/actions/cache#cache-limits
+    strategy:
+      matrix:
+        erlang: ["23.2.7.2"]
+        elixir: ["1.11.4-otp-23"]
+
     # TODO: test on macos, maybe via asdf?
     # switch to macos-11 once available (https://github.com/actions/virtual-environments/issues/2486)
     runs-on: macos-latest
@@ -38,6 +39,9 @@ jobs:
             ${{ runner.os }}-asdf-erlang-${{ matrix.erlang }}-elixir-${{ matrix.elixir }}
             ${{ runner.os }}-asdf-erlang-${{ matrix.erlang }}-
             ${{ runner.os }}-asdf-
+
+      - name: install asdf elixir plugin
+        uses: asdf-vm/actions/plugins-add
 
       - name: asdf_install
         uses: asdf-vm/actions/install@v1.1.0
