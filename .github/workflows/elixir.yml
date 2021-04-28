@@ -1,0 +1,57 @@
+name: CI
+on: 
+  push:
+  pull_request:
+  schedule:
+    # run a quick build twice a week to avoid cache eviction of the erlang compilation
+    # https://github.com/actions/cache#cache-limits, at least until precompiled binaries
+    # are available for MacOS
+    - cron: 0 9 * * SUN,WED
+jobs:
+  mix_test:
+    name: mix test (Elixir ${{ matrix.elixir }} OTP ${{ matrix.otp }})
+    strategy:
+      matrix:
+        erlang: ["23.2.7.2"]
+        elixir: ["1.11.4-otp-23"]
+    # Note: macos-latest is currently Catalina (https://github.com/actions/virtual-environments/issues/2486)
+    runs-on: macos-latest
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v2
+
+      # using the low-level API to ensure we can cache Erlang build
+      # https://github.com/asdf-vm/actions/issues/235#issuecomment-791924703
+
+      # https://github.com/asdf-vm/actions/blob/master/setup/action.yml
+      - name: asdf setup
+        uses: asdf-vm/actions/setup@v1.1.0
+
+      - name: generate .tool-versions file
+        run: |
+          echo "elixir ${{ matrix.elixir }}" > .tool-versions
+          echo "erlang ${{ matrix.erlang }}" >> .tool-versions
+
+      # https://github.com/actions/cache
+      - name: asdf cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.ASDF_DIR }}
+          key: ${{ runner.os }}-asdf-v2-erlang-${{ matrix.erlang }}-elixir-${{ matrix.elixir }}
+          restore-keys: |
+            ${{ runner.os }}-asdf-v2-erlang-${{ matrix.erlang }}-elixir-${{ matrix.elixir }}
+            ${{ runner.os }}-asdf-v2-erlang-${{ matrix.erlang }}-
+            ${{ runner.os }}-asdf-v2-
+
+      - name: install asdf plugins
+        uses: asdf-vm/actions/plugins-add@v1.1.0
+
+      - name: asdf_install
+        uses: asdf-vm/actions/install@v1.1.0
+
+      - run: elixir --version
+      - run: brew install portmidi
+      - run: mix local.hex --force
+      - run: mix local.rebar --force
+      - run: mix deps.get
+      - run: mix test
