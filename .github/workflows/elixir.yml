@@ -53,6 +53,7 @@ jobs:
         uses: asdf-vm/actions/install@v1.1.0
 
       - run: elixir --version
+      - run: brew install portmidi
       - run: mix local.hex --force
       - run: mix local.rebar --force
       - run: mix deps.get
