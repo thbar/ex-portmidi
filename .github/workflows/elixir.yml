@@ -1,23 +1,20 @@
 name: CI
-# TODO: add pull_request
 on: 
   push:
-  # pull_request:
+  pull_request:
   schedule:
     # run a quick build twice a week to avoid cache eviction of the erlang compilation
+    # https://github.com/actions/cache#cache-limits, at least until precompiled binaries
+    # are available for MacOS
     - cron: 0 9 * * SUN,WED
 jobs:
   mix_test:
     name: mix test (Elixir ${{ matrix.elixir }} OTP ${{ matrix.otp }})
-    # TODO: create a bi-weekly build to avoid cache eviction, or find something better like binary builds for erlang
-    # https://github.com/actions/cache#cache-limits
     strategy:
       matrix:
         erlang: ["23.2.7.2"]
         elixir: ["1.11.4-otp-23"]
-
-    # TODO: test on macos, maybe via asdf?
-    # switch to macos-11 once available (https://github.com/actions/virtual-environments/issues/2486)
+    # Note: macos-latest is currently Catalina (https://github.com/actions/virtual-environments/issues/2486)
     runs-on: macos-latest
     steps:
       # https://github.com/actions/checkout
