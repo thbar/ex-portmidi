@@ -52,6 +52,6 @@ jobs:
       - name: asdf_install
         uses: asdf-vm/actions/install@v1.1.0
 
-      # - run: elixir --version
-      # - run: mix deps.get
-      # - run: mix test
+      - run: elixir --version
+      - run: mix deps.get
+      - run: mix test
