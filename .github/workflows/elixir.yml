@@ -1,6 +1,12 @@
 name: CI
 # TODO: add pull_request
 on: [push]
+# TODO: create a bi-weekly build to avoid cache eviction, or find something better like binary builds for erlang
+# https://github.com/actions/cache#cache-limits
+strategy:
+  matrix:
+    erlang: ["23.2.7.2"]
+    elixir: ["1.11.4-otp-23"]
 jobs:
   mix_test:
     name: mix test (Elixir ${{ matrix.elixir }} OTP ${{ matrix.otp }})
@@ -10,14 +16,32 @@ jobs:
     steps:
       # https://github.com/actions/checkout
       - uses: actions/checkout@v2
-      # https://github.com/asdf-vm/actions#main-actions
+
+      # using the low-level API to ensure we can cache Erlang build
+      # https://github.com/asdf-vm/actions/issues/235#issuecomment-791924703
+
+      # https://github.com/asdf-vm/actions/blob/master/setup/action.yml
+      - name: asdf setup
+        uses: asdf-vm/actions/setup@v1.1.0
+
+      - name: generate .tool-versions file
+        run: |
+          echo "elixir ${{ matrix.elixir }}" > .tool-versions
+
+      # https://github.com/actions/cache
+      - name: asdf cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.ASDF_DIR }}
+          key: ${{ runner.os }}-asdf-erlang-${{ matrix.erlang }}-elixir-${{ matrix.elixir }}
+          restore-keys: |
+            ${{ runner.os }}-asdf-erlang-${{ matrix.erlang }}-elixir-${{ matrix.elixir }}
+            ${{ runner.os }}-asdf-erlang-${{ matrix.erlang }}-
+            ${{ runner.os }}-asdf-
+
       - name: asdf_install
         uses: asdf-vm/actions/install@v1.1.0
-        with:
-          tool_versions: erlang 23.3.2
-      - name: asdf_install
-        uses: asdf-vm/actions/install@v1.1.0
-        with:
-          tool_versions: elixir 1.11.4-otp-23
-      - run: mix deps.get
-      - run: mix test
+
+      - run: elixir --version
+      # - run: mix deps.get
+      # - run: mix test
