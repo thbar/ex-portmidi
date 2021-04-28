@@ -16,5 +16,6 @@ jobs:
         with:
           tool_versions: >
             elixir 1.11.4-otp-23
+            erlang 23.3.2
       - run: mix deps.get
       - run: mix test
