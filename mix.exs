@@ -30,7 +30,7 @@ defmodule PortMidi.Mixfile do
 
   defp deps do
     [
-      {:credo, "~> 0.5.3", only: [:dev, :test]},
+      {:credo, "~> 1.5.5", only: [:dev, :test]},
       {:mock, "~> 0.3.6", only: :test},
       {:ex_doc, "~> 0.24.2", only: :dev},
       {:earmark, ">= 0.0.0", only: :dev}
