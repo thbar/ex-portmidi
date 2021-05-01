@@ -7,14 +7,14 @@ defmodule PortMidiInputServerTest do
   import Mock
 
   test "new_messages/2 broadcasts to processes in Listeners" do
-    {:ok, _input} = Agent.start(fn -> [] end)
+    {:ok, input} = Agent.start(fn -> [] end)
     Listeners.register(input, self())
 
     Agent.get input, fn(_) ->
       handle_cast({:new_messages, %{message: {176, 0, 127}, timestamp: 0}}, nil)
     end
 
-    assert_received {input, %{message: {176, 0, 127}, timestamp: 0}}
+    assert_received {^input, %{message: {176, 0, 127}, timestamp: 0}}
   end
 
   test "terminating the server calls close on the reader" do
