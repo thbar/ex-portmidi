@@ -7,7 +7,7 @@ defmodule PortMidiInputServerTest do
   import Mock
 
   test "new_messages/2 broadcasts to processes in Listeners" do
-    {:ok, input} = Agent.start(fn -> [] end)
+    {:ok, _input} = Agent.start(fn -> [] end)
     Listeners.register(input, self())
 
     Agent.get input, fn(_) ->
