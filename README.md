@@ -1,3 +1,11 @@
+# Fork notice
+
+This repo is a fork from https://github.com/lucidstack/ex-portmidi by @thbar, with continuous integration enabled (against MacOS), targetting Elixir 1.12 and OTP 23. It contains fixes for all the warnings I could find, and updated test dependencies.
+
+It may or may not diverge from the original fork in the future, and has not been published to Hex at this point, so you'll have to install from GitHub.
+
+[![Build Status](https://github.com/thbar/ex-portmidi/actions/workflows/elixir.yml/badge.svg)](https://github.com/thbar/ex-portmidi/actions)
+
 # ex-portmidi
 
 **Need to catch up?** Have a look at the [changelog](/CHANGELOG.md)! 🚀
